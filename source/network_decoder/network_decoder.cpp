@@ -323,7 +323,7 @@ Result_with_string NetworkDecoderFilterData::init(AVCodecContext *audio_context)
 		// abuffer (source)
 		snprintf(option_buffer, 256, "time_base=%d/%d:sample_rate=%d:sample_fmt=%s:ch_layout=0x%" PRIx64, 
 			audio_context->time_base.num, audio_context->time_base.den, audio_context->sample_rate,
-			av_get_sample_fmt_name(audio_context->sample_fmt), (uint64_t)audio_context->channel_layout);
+			av_get_sample_fmt_name(audio_context->sample_fmt), (uint64_t)audio_context->ch_layout);
 		ffmpeg_result = avfilter_graph_create_filter(&audio_filter_src, abuffer, NULL, option_buffer, NULL, audio_filter_graph);
 		if (ffmpeg_result < 0) {
 			result.error_description = "abuffer creation failed";
