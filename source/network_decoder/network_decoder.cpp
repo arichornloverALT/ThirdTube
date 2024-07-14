@@ -614,7 +614,7 @@ Result_with_string NetworkDecoder::init_decoder(int type) {
 			result.error_description = "swr_alloc() failed ";
 			goto fail;
 		}
-		if (!swr_alloc_set_opts(swr_context, av_opt_set_channel_layout(decoder_context[AUDIO]->codecpar->channels), AV_SAMPLE_FMT_S16, decoder_context[AUDIO]->sample_rate,
+		if (!swr_alloc_set_opts(swr_context, av_opt_set_channel_layout(decoder_context[AUDIO]->codec->channels), AV_SAMPLE_FMT_S16, decoder_context[AUDIO]->sample_rate,
 			av_get_default_ch_layout(decoder_context[AUDIO]->channels), decoder_context[AUDIO]->sample_fmt, decoder_context[AUDIO]->sample_rate, 0, NULL))
 		{
 			result.error_description = "swr_alloc_set_opts() failed ";
