@@ -321,9 +321,9 @@ Result_with_string NetworkDecoderFilterData::init(AVCodecContext *audio_context)
 		std::vector<AVFilterContext *> filter_sequence;
 		char option_buffer[256] = { 0 };
 		// abuffer (source)
-		snprintf(option_buffer, 256, "time_base=%d/%d:sample_rate=%d:sample_fmt=%s:channel_layout=0x%" PRIx64, 
+		snprintf(option_buffer, 256, "time_base=%d/%d:sample_rate=%d:sample_fmt=%s:ch_layout=0x%" PRIx64, 
 			audio_context->time_base.num, audio_context->time_base.den, audio_context->sample_rate,
-			av_get_sample_fmt_name(audio_context->sample_fmt), audio_context->channel_layout);
+			av_get_sample_fmt_name(audio_context->sample_fmt), audio_context->ch_layout);
 		ffmpeg_result = avfilter_graph_create_filter(&audio_filter_src, abuffer, NULL, option_buffer, NULL, audio_filter_graph);
 		if (ffmpeg_result < 0) {
 			result.error_description = "abuffer creation failed";
@@ -399,7 +399,7 @@ Result_with_string NetworkDecoderFilterData::init(AVCodecContext *audio_context)
 		
 		// aformat
 		AVFilterContext *audio_format_filter;
-		snprintf(option_buffer, 256, "sample_fmts=%s:sample_rates=%d:channel_layouts=0x%" PRIx64,
+		snprintf(option_buffer, 256, "sample_fmts=%s:sample_rates=%d:ch_layouts=0x%" PRIx64,
 			av_get_sample_fmt_name(audio_context->sample_fmt), 44100, (uint64_t) AV_CH_LAYOUT_STEREO);
 		ffmpeg_result = avfilter_graph_create_filter(&audio_format_filter, aformat, NULL, option_buffer, NULL, audio_filter_graph);
 		if (ffmpeg_result < 0) {
@@ -614,8 +614,8 @@ Result_with_string NetworkDecoder::init_decoder(int type) {
 			result.error_description = "swr_alloc() failed ";
 			goto fail;
 		}
-		if (!swr_alloc_set_opts(swr_context, av_get_default_channel_layout(decoder_context[AUDIO]->channels), AV_SAMPLE_FMT_S16, decoder_context[AUDIO]->sample_rate,
-			av_get_default_channel_layout(decoder_context[AUDIO]->channels), decoder_context[AUDIO]->sample_fmt, decoder_context[AUDIO]->sample_rate, 0, NULL))
+		if (!swr_alloc_set_opts(swr_context, av_get_default_ch_layout(decoder_context[AUDIO]->channels), AV_SAMPLE_FMT_S16, decoder_context[AUDIO]->sample_rate,
+			av_get_default_ch_layout(decoder_context[AUDIO]->channels), decoder_context[AUDIO]->sample_fmt, decoder_context[AUDIO]->sample_rate, 0, NULL))
 		{
 			result.error_description = "swr_alloc_set_opts() failed ";
 			goto fail;
